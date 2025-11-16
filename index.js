@@ -10,14 +10,15 @@ app.get("/passes/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    const r = await fetch(
-      `https://catalog.roblox.com/v1/search/items/details?Category=12&Subcategory=40&CreatorTargetId=${userId}&CreatorType=User&Limit=30`
-    );
+    const url = `https://catalog.roblox.com/v1/search/items?creatorTargetId=${userId}&creatorType=User&categories=GamePass&limit=30`;
 
+    const r = await fetch(url);
     const data = await r.json();
+
+    // Return only the array of items
     res.json(data);
   } catch (err) {
-    console.error(err);
+    console.error("SERVER ERROR:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
